@@ -58,7 +58,7 @@ function setup_vimrc(){
 }
 
 function install_iterm(){
-  echo "Setup Iterm"
+  pretty_print "Setup Iterm"
   is_app_installed iterm
   if [[ "$?" = 0 ]]; then
     echo "iterm already installed"
@@ -70,7 +70,7 @@ function install_iterm(){
 function setup_zsh(){
   which zsh
   if [[ "$?" = 0 ]]; then
-    echo "zsh is already installed"
+    pretty_print "zsh is already installed"
   else
     brew install zsh
   fi
