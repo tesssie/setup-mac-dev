@@ -104,6 +104,7 @@ function setup_virtualenv_for_python2(){
 
 setup_brew
 brew update
+brew upgrade --all
 install_vim
 setup_git
 setup_extra_utilities
