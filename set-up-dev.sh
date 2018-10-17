@@ -44,7 +44,7 @@ function configure_git(){
   git config --global user.name $username
   pretty_print "Configure git email"
   read user_email
-  git config --global user.email $username
+  git config --global user.email $user_email
   pretty_print "Configuring vim as editor"
   git config --global core.editor vim
   pretty_print "Push behavior"
