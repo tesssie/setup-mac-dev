@@ -52,6 +52,14 @@ function configure_git(){
   git config --list
 }
 
+function setup_extra_utilities(){
+  brew install wget --with-iri
+  brew install imagemagick --with-webp
+  brew install rename
+  brew install tree
+  brew install jq
+}
+
 function setup_vimrc(){
   git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
   sh ~/.vim_runtime/install_awesome_vimrc.s
@@ -98,6 +106,7 @@ setup_brew
 brew update
 install_vim
 setup_git
+setup_extra_utilities
 pretty_print "Want to configure git y/n?"
 read option
 if [[ "$option" = "y" ]]; then
