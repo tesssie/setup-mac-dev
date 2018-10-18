@@ -53,11 +53,26 @@ function configure_git(){
 }
 
 function setup_extra_utilities(){
-  brew install wget --with-iri
-  brew install imagemagick --with-webp
-  brew install rename
-  brew install tree
-  brew install jq
+  if ! command -v wget >/dev/null; then
+    pretty_print "Install wget"
+    brew install wget --with-iri
+  fi
+  if ! command -v convert >/dev/null; then
+    pretty_print "Install imagegmagic"
+    brew install imagemagick --with-webp
+  fi
+  if ! command -v rename >/dev/null; then
+    pretty_print "Rename"
+    brew install rename
+  fi
+  if ! command -v tree >/dev/null; then
+    pretty_print "Tree"
+    brew install tree
+  fi
+  if ! command -v jq >/dev/null; then
+    pretty_print "jq"
+    brew install jq
+  fi
 }
 
 function setup_vimrc(){
@@ -88,8 +103,10 @@ function setup_zsh(){
 }
 
 function setup_pip(){
-  pretty_print "Setting up pip"
-  sudo easy_install pip
+  if ! command -v pip >/dev/null; then 
+    pretty_print "Setting up pip"
+    sudo easy_install pip
+  fi  
 }
 
 function setup_python3(){
