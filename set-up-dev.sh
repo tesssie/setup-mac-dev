@@ -102,13 +102,6 @@ function setup_zsh(){
   sudo chsh -s $(which zsh)
 }
 
-function setup_pip(){
-  if ! command -v pip >/dev/null; then 
-    pretty_print "Setting up pip"
-    sudo easy_install pip
-  fi  
-}
-
 function setup_python3(){
   if ! command -v python3 >/dev/null; then
     brew install python3
@@ -123,7 +116,11 @@ function setup_python3(){
   fi
 }
 
-function setup_virtualenv_for_python2(){
+function setup_python2(){
+  if ! command -v pip >/dev/null; then
+    pretty_print "Setting up pip"
+    sudo easy_install pip
+  fi  
   if ! pip show virtualenv >/dev/null; then
     pip install virtualenv --user
   fi
@@ -145,6 +142,5 @@ if [[ "$option" = "y" ]]; then
 fi
 install_iterm
 setup_zsh
-setup_pip
 setup_python3
-setup_virtualenv_for_python2
+setup_python2
