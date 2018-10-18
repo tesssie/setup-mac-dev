@@ -115,13 +115,21 @@ function setup_python3(){
   else
     pretty_print "Python3 is already installed"
   fi
+  if ! pip3 show virtualenv >/dev/null; then
     pip3 install virtualenv --user
+  fi
+  if ! pip3 show pipenv >/dev/null; then
     pip3 install pipenv --user
+  fi
 }
 
 function setup_virtualenv_for_python2(){
+  if ! pip show virtualenv >/dev/null; then
     pip install virtualenv --user
+  fi
+  if ! pip show pipenv >/dev/null; then
     pip install pipenv --user
+  fi
 }
 
 setup_brew
