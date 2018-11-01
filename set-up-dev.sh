@@ -135,6 +135,28 @@ function setup_python2(){
   fi
 }
 
+function setup_rvm(){
+  if ! command -v rvm >/dev/null; then
+    brew install gnupg gnupg2
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+    curl -sSL https://get.rvm.io | bash -s stable
+    echo "source $HOME/.rvm/scripts/rvm" >>  ~/.zshrc
+    exec /bin/zsh
+    source ~/.zshrc
+  fi
+  }
+
+function setup_rust(){
+  pretty_print "Setting up rust"
+  if ! command -v rustc >/dev/null; then
+    pretty_print "Rust Not installed"
+    brew install rustup
+    rustup-init
+    rustc --version
+    source $HOME/.cargo/env
+  fi
+}
+
 setup_brew
 brew update
 brew upgrade --all
@@ -150,3 +172,5 @@ install_iterm
 setup_zsh
 setup_python3
 setup_python2
+setup_rvm
+setup_rust
