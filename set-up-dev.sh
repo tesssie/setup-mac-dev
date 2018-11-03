@@ -10,30 +10,29 @@ function is_app_installed(){
   fi
 }
 
+function install(){
+   if ! command -v $1 > /dev/null; then
+    pretty_print "Installing $1" 
+    brew install $1 --$2
+  else
+    pretty_print "$1 is already installed"
+  fi
+}
+
+function append_to_zshrc(){
+  if ! grep "$1" $HOME/.zshrc > /dev/null; then
+    echo "$1"  >>  ~/.zshrc
+    exec /bin/zsh
+    source ~/.zshrc
+  fi
+}
+
 function setup_brew(){
   if ! command -v brew > /dev/null; then
     pretty_print "Installing brew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   else
     pretty_print "Brew is already installed"
-  fi
-}
-
-function install_vim(){
-  if ! command -v vim > /dev/null; then
-    pretty_print "Installing vim" 
-    brew install vim
-  else
-    pretty_print "Vim is already installed"
-  fi
-}
-
-function setup_git(){
-  if ! command -v git > /dev/null; then
-    pretty_print "Install git"
-    brew install git
-  else
-    pretty_print "git is already installed"
   fi
 }
 
@@ -52,29 +51,6 @@ function configure_git(){
   git config --list
 }
 
-function setup_extra_utilities(){
-  if ! command -v wget >/dev/null; then
-    pretty_print "Install wget"
-    brew install wget --with-iri
-  fi
-  if ! command -v convert >/dev/null; then
-    pretty_print "Install imagegmagic"
-    brew install imagemagick --with-webp
-  fi
-  if ! command -v rename >/dev/null; then
-    pretty_print "Rename"
-    brew install rename
-  fi
-  if ! command -v tree >/dev/null; then
-    pretty_print "Tree"
-    brew install tree
-  fi
-  if ! command -v jq >/dev/null; then
-    pretty_print "jq"
-    brew install jq
-  fi
-}
-
 function setup_vimrc(){
   git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
   sh ~/.vim_runtime/install_awesome_vimrc.s
@@ -91,29 +67,29 @@ function install_iterm(){
 }
 
 function setup_zsh(){
-  which zsh
-  if [[ "$?" = 0 ]]; then
-    pretty_print "zsh is already installed"
-  else
-    brew install zsh
+  install zsh
+  if ! brew ls --versions zsh-completions >/dev/null; then
+    brew install zsh-completions
   fi
-  brew install zsh-completions
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-  sudo chsh -s $(which zsh)
+  if [ ! -d /Users/tessie/.oh-my-zsh ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  fi
+  if [ "$(command -v zsh)" != '/usr/local/bin/zsh' ] ; then
+    shell_path="$(command -v zsh)"
+    if ! grep "$shell_path" /etc/shells > /dev/null 2>&1 ; then
+      pretty_print "Adding '$shell_path' to /etc/shells"
+      sudo sh -c "echo $shell_path >> /etc/shells"
+    fi
+    sudo chsh -s "$shell_path" "$USER"
+  fi
   if [ ! -d ~/.zsh/zsh-autosuggestions ]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions 
-    echo "source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >>  ~/.zshrc
-    exec /bin/zsh
-    source  ~/.zshrc
+    append_to_zshrc "source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
   fi
 }
 
 function setup_python3(){
-  if ! command -v python3 >/dev/null; then
-    brew install python3
-  else
-    pretty_print "Python3 is already installed"
-  fi
+  install python3
   if ! pip3 show virtualenv >/dev/null; then
     pip3 install virtualenv --user
   fi
@@ -137,37 +113,39 @@ function setup_python2(){
 
 function setup_rvm(){
   if ! command -v rvm >/dev/null; then
-    brew install gnupg gnupg2
+    install gnupg
+    install gnupg2
     gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     curl -sSL https://get.rvm.io | bash -s stable
-    echo "source $HOME/.rvm/scripts/rvm" >>  ~/.zshrc
-    exec /bin/zsh
-    source ~/.zshrc
+    append_to_zshrc "source $HOME/.rvm/scripts/rvm"
   fi
   }
 
 function setup_rust(){
-  pretty_print "Setting up rust"
-  if ! command -v rustc >/dev/null; then
-    pretty_print "Rust Not installed"
-    brew install rustup
-    rustup-init
-    rustc --version
-    source $HOME/.cargo/env
-  fi
+  install rustup
+  source $HOME/.cargo/env
+}
+
+function setup_javascript_packages(){
+  install yarn --without-node
+  install node
 }
 
 setup_brew
 brew update
 brew upgrade --all
-install_vim
-setup_git
-setup_extra_utilities
+install vim
+install git
 pretty_print "Want to configure git y/n?"
 read option
 if [[ "$option" = "y" ]]; then
   configure_git
 fi
+install wget --with-iri
+install imagemagick --with-webp
+install rename
+install tree
+install jq
 install_iterm
 setup_zsh
 setup_python3
