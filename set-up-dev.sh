@@ -87,9 +87,6 @@ function setup_zsh(){
 
 function setup_python3(){
   install python3
-  if ! pip3 show virtualenv >/dev/null; then
-    pip3 install virtualenv --user
-  fi
   if ! pip3 show pipenv >/dev/null; then
     pip3 install pipenv --user
   fi
@@ -100,9 +97,6 @@ function setup_python2(){
     pretty_print "Setting up pip"
     sudo easy_install pip
   fi  
-  if ! pip show virtualenv >/dev/null; then
-    pip install virtualenv --user
-  fi
   if ! pip show pipenv >/dev/null; then
     pip install pipenv --user
   fi
@@ -147,5 +141,6 @@ install_iterm
 setup_zsh
 setup_python3
 setup_python2
+install pyenv
 setup_rvm
 setup_rust
