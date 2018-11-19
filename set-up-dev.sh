@@ -144,3 +144,6 @@ setup_python2
 install pyenv
 setup_rvm
 setup_rust
+brew cask install firefox
+brew cask install visual-studio-code
+brew cask install docker
