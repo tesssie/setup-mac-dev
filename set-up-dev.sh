@@ -21,7 +21,7 @@ function install(){
 
 function append_to_zshrc(){
   if ! grep "$1" $HOME/.zshrc > /dev/null; then
-    echo "$1"  >>  ~/.zshrc
+    echo "$1" >>  ~/.zshrc
     exec /bin/zsh
     source ~/.zshrc
   fi
@@ -68,9 +68,6 @@ function install_iterm(){
 
 function setup_zsh(){
   install zsh
-  if ! brew ls --versions zsh-completions >/dev/null; then
-    brew install zsh-completions
-  fi
   if [ ! -d /Users/tessie/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
   fi
