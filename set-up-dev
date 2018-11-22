@@ -76,6 +76,7 @@ install_rbenv() {
 }
 
 setup_rust() {
+	#TODO : Fix rust path
 	install rustup
 	# source $HOME/.cargo/env
 }
