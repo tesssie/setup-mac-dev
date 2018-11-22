@@ -80,7 +80,7 @@ function setup_zsh(){
     sudo chsh -s "$shell_path" "$USER"
   fi
   if [ ! -d ~/.zsh/zsh-autosuggestions ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions 
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
     append_to_zshrc "source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
   fi
 }
@@ -102,16 +102,10 @@ function setup_python2(){
   fi
 }
 
-function setup_rvm(){
-  if ! command -v rvm >/dev/null; then
-    install gnupg
-    install gnupg2
-    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-    curl -sSL https://get.rvm.io | bash -s stable
-    append_to_zshrc "source $HOME/.rvm/scripts/rvm"
-  fi
-  }
-
+function install_rbenv() {
+  install rbenv
+  eval "$(rbenv init -)"
+}
 function setup_rust(){
   install rustup
   source $HOME/.cargo/env
@@ -142,8 +136,9 @@ setup_zsh
 setup_python3
 setup_python2
 install pyenv
-setup_rvm
+install_rbenv
 setup_rust
 brew cask install firefox
 brew cask install visual-studio-code
 brew cask install docker
+setup_javascript_packages
