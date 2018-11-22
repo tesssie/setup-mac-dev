@@ -96,7 +96,7 @@ function setup_python2(){
   if ! command -v pip >/dev/null; then
     pretty_print "Setting up pip"
     sudo easy_install pip
-  fi  
+  fi
   if ! pip show pipenv >/dev/null; then
     pip install pipenv --user
   fi
@@ -137,8 +137,10 @@ setup_python3
 setup_python2
 install pyenv
 install_rbenv
+setup_javascript_packages
 setup_rust
 brew cask install firefox
 brew cask install visual-studio-code
 brew cask install docker
-setup_javascript_packages
+brew cask install rubymine
+brew cask install webstorm
