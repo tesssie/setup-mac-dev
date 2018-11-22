@@ -1,6 +1,7 @@
 # setup-mac-dev
+
 Set up mac for development
 
-A Shell script to setup mac for decelopment
+## Installation
 
-
+curl --remote-name curl --remote-name https://raw.githubusercontent.com/tesssie/setup-mac-dev/master/set-up-dev
