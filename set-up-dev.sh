@@ -36,21 +36,6 @@ function setup_brew(){
   fi
 }
 
-function configure_git(){
-  pretty_print "Configuring git"
-  pretty_print "Enter Username"
-  read user_name
-  git config --global user.name $username
-  pretty_print "Configure git email"
-  read user_email
-  git config --global user.email $user_email
-  pretty_print "Configuring vim as editor"
-  git config --global core.editor vim
-  pretty_print "Push behavior"
-  git config --global push.default current
-  git config --list
-}
-
 function setup_vimrc(){
   git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
   sh ~/.vim_runtime/install_awesome_vimrc.s
@@ -121,11 +106,6 @@ brew update
 brew upgrade --all
 install vim
 install git
-pretty_print "Want to configure git y/n?"
-read option
-if [[ "$option" = "y" ]]; then
-  configure_git
-fi
 install wget --with-iri
 install imagemagick --with-webp
 install rename
